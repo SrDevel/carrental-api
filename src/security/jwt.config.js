@@ -36,10 +36,10 @@ const validateToken = (req, res, next) => {
         if (err) {
             return next();
         }
-
         req.userId = decoded.id;
         next();
     });
+
 }
 
 const generateToken = (user) => {

@@ -1,9 +1,9 @@
 const { Model, DataTypes} = require('sequelize');
 const sequelize = require('../db/database');
 
-class Office extends Model { }
+class Client extends Model { }
 
-Office.init(
+Client.init(
     {
         id: {
             type: DataTypes.UUID,
@@ -14,7 +14,11 @@ Office.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        address: {
+        last_name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        email: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -22,29 +26,22 @@ Office.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        opening_time: {
-            type: DataTypes.TIME,
-            allowNull: false
-        },
-        latitude: {
-            type: DataTypes.DECIMAL(10, 8),
-            allowNull: false
-        },
-        longitude: {
-            type: DataTypes.DECIMAL(11, 8),
+        address: {
+            type: DataTypes.STRING,
             allowNull: false
         }
-    },{sequelize, modelName: 'office'}
+    },{sequelize, modelName: 'client'}
 );
-
-module.exports = Office;
 
 // (async () => {
 //     try {
 //         await sequelize.sync({ force: true });
-//         console.log('Modelo Office sincronizado');
+//         console.log('Modelo Client sincronizado');
 //     } catch (error) {
 //         console.error(error);
-//         console.warn('Error al sincronizar el modelo Office');
+//         console.warn('Error al sincronizar el modelo Client');
 //     }
 // })();
+
+module.exports = Client;
+

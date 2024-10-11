@@ -1,64 +1,64 @@
 const express = require('express');
 const router = express.Router();
-const office = require('../models/office.model');
+const rental = require('../models/rental.model');
 const { verifyToken } = require('../security/jwt.config');
 
 router.use(express.json());
 
-const getOffice = async (req, res, next) => {
-    let office;
+const getRental = async (req, res, next) => {
+    let rental;
     const { id } = req.params;
 
     if (!id) return res.status(400).json({ message: 'El id es requerido' });
 
     try {
-        office = await office.findOne({
+        rental = await rental.findOne({
             where: { id }
         })
 
-        if (!office) return res.status(404).json({ message: 'Oficina no encontrada' });
+        if (!rental) return res.status(404).json({ message: 'Alquiler no encontrado' });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: error.message });
     }
 
-    res.office = office;
+    res.rental = rental;
     next();
 }
 
 router.get('/', async (req, res) => {
     try {
-        const offices = await office.findAll();
-        if (offices.length === 0) return res.status(404).json({message: 'No hay oficinas'});
-        res.status(200).json(offices);
+        const rentals = await rental.findAll();
+        if (rentals.length === 0) return res.status(404).json({message: 'No hay alquileres'});
+        res.status(200).json(rentals);
     } catch (error) {
         console.error(error);
         res.status(500).json({message: error.message});
     }
 });
 
-router.get('/:id', getOffice, async (req, res) => {
-    res.status(200).json(res.office);
+router.get('/:id', getRental, async (req, res) => {
+    res.status(200).json(res.rental);
 });
 
 router.post('/', verifyToken, async (req, res) => {
     const { body } = req;
 
     try {
-        const newOffice = await office.create(body);
-        res.status(201).json(newOffice);
+        const newRental = await rental.create(body);
+        res.status(201).json(newRental);
     } catch (error) {
         console.error(error);
         res.status(500).json({message: error.message});
     }
 });
 
-router.put('/:id', verifyToken, getOffice, async (req, res) => {
+router.put('/:id', verifyToken, getRental, async (req, res) => {
     const { body } = req;
 
     try {
-        await res.office.update(body);
-        res.status(200).json(res.office);
+        await res.rental.update(body);
+        res.status(200).json(res.rental);
     } catch (error) {
         console.error(error);
         res.status(500).json({message: error.message});
