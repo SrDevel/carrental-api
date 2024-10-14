@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 
 const app = express();
+const cors = require('cors');
 
 dotenv.config();
 app.use(logger('dev'));
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
 const vehicleRouter = require('../routes/vehicle.route');
 const officeRouter = require('../routes/office.route');

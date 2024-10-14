@@ -40,23 +40,23 @@ Rental.init({
 
 
 
-Rental.belongsTo(Client);
-Client.hasMany(Rental);
+Rental.belongsTo(Client, { foreignKey: 'client_id' });
+Client.hasMany(Rental, { foreignKey: 'client_id' });
 
-Rental.belongsTo(Vehicle);
-Vehicle.hasMany(Rental);
+Rental.belongsTo(Vehicle, { foreignKey: 'vehicle_id' });
+Vehicle.hasMany(Rental, { foreignKey: 'vehicle_id' });
 
-Rental.belongsTo(Office);
-Office.hasMany(Rental);
+Rental.belongsTo(Office, { foreignKey: 'office_id' });
+Office.hasMany(Rental, { foreignKey: 'office_id' });
+
 
 module.exports = Rental;
-//
+
 // (async () => {
 //     try {
-//         await sequelize.sync({ force: true });
-//         console.log('Modelo Rental sincronizado');
+//         await Rental.sync({ alter: true }); // Solo sincroniza la tabla Rental
+//         console.log('Modelo Rental actualizado sin eliminar otros datos.');
 //     } catch (error) {
-//         console.error(error);
-//         console.warn('Error al sincronizar el modelo Rental');
+//         console.error('Error al actualizar el modelo Rental:', error);
 //     }
 // })();

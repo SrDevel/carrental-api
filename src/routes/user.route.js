@@ -46,4 +46,27 @@ router.get('/logout', (req, res) => {
     destroyToken(req, res);
 });
 
+router.get('/me', async (req, res) => {
+    const { token } = req.cookies;
+
+    try {
+        const { id } = token;
+        const userFound = await user.findByPk(id, { attributes: { exclude: ['password'] } });
+        res.status(200).json(userFound);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.get('/', async (req, res) => {
+    try {
+        const users = await user.findAll({ attributes: { exclude: ['password'] } });
+        res.status(200).json(users);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;

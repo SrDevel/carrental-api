@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const vehicle = require('../models/vehicle.model');
-const { verifyToken } = require('../security/jwt.config');
+const upload = require('../utils/fileUpload.util');
+
 
 router.use(express.json());
 
@@ -41,15 +42,20 @@ router.get('/:id', getVehicle, async (req, res) => {
     res.status(200).json(res.vehicle);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
     const { body } = req;
 
     try {
+        if (req.file) {
+            // Cloudinary devuelve un objeto con la URL de la imagen
+            body.image = req.file.path; // La URL pública de la imagen en Cloudinary
+        }
+
         const newVehicle = await vehicle.create(body);
         res.status(201).json(newVehicle);
     } catch (error) {
         console.error(error);
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
 });
 
