@@ -59,6 +59,24 @@ router.post('/', upload.single('image'), async (req, res) => {
     }
 });
 
+// Obtener vehiculos disponibles según la oficina
+router.get('/available/:officeId', async (req, res) => {
+    const { officeId } = req.params;
+
+    try {
+        const vehicles = await vehicle.findAll({
+            where: { officeId, status: 'Disponible' }
+        });
+
+        if (vehicles.length === 0) return res.status(404).json({ message: 'No hay vehículos disponibles en esta oficina' });
+
+        res.status(200).json(vehicles);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;
 
 

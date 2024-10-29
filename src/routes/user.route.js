@@ -22,7 +22,7 @@ router.post('/login', async (req, res) => {
 
         const token = generateToken(userFound.id);
         res.cookie('token', token, { httpOnly: true });
-        res.status(200).json({ message: `Inicio de sesión exitoso, token: ${token.toString()}`  });
+        res.status(200).json({ token: token, message: 'Inicio de sesión exitoso' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: error.message });
